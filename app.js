@@ -1,14 +1,15 @@
 const express = require('express');
-
+//const cors = require('cors')
 const app = express();
-
 const mongoose = require('mongoose');
+const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://Sadio:Coulibali25@cluster0.ys7kmsw.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+  //app.use(cors())
 
 app.use(express.json());
 
@@ -19,25 +20,6 @@ app.use((req, res, next) => {
     next();
   });
 
-app.post('/api/auth/login',(req,res,next)=> {
-    console.log(req.body);
-    res.status(201).json({
-        message:'Utilisateur connecté !'
-    });
-})
-app.get('/api/auth/login',(req,res,next) => {
-    const login =[
-    { 
-        email:'user@domaine.com',
-        password :'jhudyg5ml'
-
-    }
-];
-
-res.status(200).json(login)
-});
-   
-  
- 
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
