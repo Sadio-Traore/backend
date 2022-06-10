@@ -8,7 +8,10 @@
      const sauce = new Sauce({
         ...sauceObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        
+        likes: 0,
+        dislikes: 0,
+        usersLiked: [' '],
+        usersdisLiked: [' ']
      });
      sauce.save()
        .then(() => res.status(201).json({ message : 'Sauce enregistrée !'}))
@@ -131,111 +134,3 @@
                 console.log(error);
             }
 } 
-
-
-
-
-
-
-
-// exports.likeSauce = (req,res,next) => {
-
-//     // Affiche du req.body
-//     console.log(req.body);
-
-//     // Récupérer l'Id de l'objet dans l'URL de la requête
-//     console.log(req.params);
-
-//     // id => _id
-//     console.log ({_id : req.params.id});
-
-//     // Récupérer l'objet dans la base de donnéé
-
-//     Sauce
-//     .findOne({_id :req.params.id})
-//     .then((sauce)=> {
-//             console.log(sauce)
-//         // res.status(200).json(sauce);
-//         switch(req.body.like){
-
-//         // Cas like = +1
-//         case 1 :
-//             //si l'userId n'est pas présent dans le tableau Userliked[] et like ===1 : méthode include
-//             if(!sauce.usersLiked.includes(req.body.userId) ){
-//                 // mise à jour "sauce" dans la base de données
-//                     Sauce.updateOne(
-//                         { _id : req.params.id },
-//                         {
-//                             $inc : {likes : 1},
-//                             $push : { usersLiked : req.body.userId },
-//                         }
-//                     )
-//                     .then(() => res.status(201).json({message: "j'aime" }))
-//                     .catch((error) => res.status(404).json({error}))
-                       
-//             }
-//             break;
-
-//             // Cas like = -1 (dislike = +1)
-//             case -1:
-//             // Si userId est présent dans usersliked et dislike = +1
-//             if(!sauce.usersDisliked.includes(req.body.userId)){
-//                 // mise à jour "sauce" dans la base de données
-//                 Sauce.updateOne(
-//                     { _id : req.params.id },
-//                     {   // on retire -1 au +1 
-//                         $inc : {dislikes : 1},
-//                         // on retire l'userId du tableau usersliked[]
-//                         $push : { usersDisliked : req.body.userId },
-//                        // $pull : { usersLiked : req.body.userId}
-//                     }
-//                 )
-//                 .then(() => res.status(201).json({message: "je n'aime pas" }))
-//                 .catch((error) => res.status(404).json({error}))
-//             }
-//             break;
-                
-//         case 0 :
-//         // Cas like = 0 (like = 0 )
-//             // Si userId présent dans usersliked[], et like = 0
-//             if(sauce.usersLiked.includes(req.body.userId)){
-//                 // mise à jour "sauce" dans la base de données
-//                 Sauce.updateOne(
-//                     { _id : req.params.id },
-//                     {   // on retire -1 au +1 
-//                         $inc : {likes : -1},
-//                         // on retire l'userId du tableau usersliked[]
-//                         $pull : { usersLiked : req.body.userId }
-//                     }
-//                 )
-//                 .then(() => res.status(201).json({message: 'Neutre' }))
-//                 .catch()
-
-//             };
-            
-            
-//             // Cas like = 0 (dislike = 0)
-//                 // Si userId présent dans usersDisliked [] et dislike =-1
-//             if(sauce.usersDisLiked.includes(req.body.userId) ){
-//                 // mise à jour "sauce" dans la base de données
-//                 Sauce.updateOne(
-//                     {_id : req.params.id },
-//                     {   // on retire -1 au +1 
-//                         $inc : {dislikes : -1}, 
-//                         // on retire l'userId du tableau usersliked[]
-//                         $pull : { usersDisLiked : req.body.userId }
-//                     }
-//                 )
-//                 .then(() => res.status(201).json({message: 'Neutre' }))
-//                 .catch((error) => res.status(404).json({error}));
-//             }
-//             break;
-
-//             default:
-//                 console.log(error);
-//         }
-
-//     }) 
-//     .catch((error) => res.status(404).json({error}));
-
-// }
